@@ -52,7 +52,7 @@ test("Deve retornar uma mensagem de erro se a data for invalida",function(){
     expect(()=> calcularRotas(entrada)).toThrowError('A data da corrida é invalida');
 })
 
-test("Deve retornar -2 se a data for invalida",function(){
+test("Deve retornar a tarifa minima caso a tafira seja menor que a tarifa minima",function(){
     const entrada = [{
         distancia: 1,
         diaDaSemana: new Date('2021-03-07T23:00:00')
