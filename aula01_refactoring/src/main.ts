@@ -1,48 +1,45 @@
 // @ts-nocheck
-// calcular rotas
-export function calcularRotas(segmentos) {
+
+function periodoNoturno(diaDaSemana: date) {
+  return diaDaSemana.getHours() >= 22 || diaDaSemana.getHours() <= 6;
+}
+
+function domingo(diaDaSemana: date) {
+  return diaDaSemana.getDay() === 0;
+}
+
+export function calcularRotas(corridas) {
   let tarifa = 0;
-  for (const segmento of segmentos) {
+  for (const corrida of corridas) {
     if (
-      segmento.distancia != null &&
-      segmento.distancia != undefined &&
-      typeof segmento.distancia === "number" &&
-      segmento.distancia > 0
+      corrida.distancia != null &&
+      corrida.distancia != undefined &&
+      typeof corrida.distancia === "number" &&
+      corrida.distancia > 0
     ) {
       if (
-        segmento.diaDaSemana != null &&
-        segmento.diaDaSemana != undefined &&
-        segmento.diaDaSemana instanceof Date &&
-        segmento.diaDaSemana.toString() !== "Invalid Date"
+        corrida.diaDaSemana != null &&
+        corrida.diaDaSemana != undefined &&
+        corrida.diaDaSemana instanceof Date &&
+        corrida.diaDaSemana.toString() !== "Invalid Date"
       ) {
-        // overnight
-
-        if (
-          segmento.diaDaSemana.getHours() >= 22 ||
-          segmento.diaDaSemana.getHours() <= 6
-        ) {
-          // not sunday
-          if (segmento.diaDaSemana.getDay() !== 0) {
-            tarifa += segmento.distancia * 3.9;
-            // sunday
+        if (periodoNoturno(corrida.diaDaSemana)) {
+          if (!domingo(corrida.diaDaSemana)) {
+            tarifa += corrida.distancia * 3.9;
           } else {
-            tarifa += segmento.distancia * 5;
+            tarifa += corrida.distancia * 5;
           }
         } else {
-          // sunday
-          if (segmento.diaDaSemana.getDay() === 0) {
-            tarifa += segmento.distancia * 2.9;
+          if (domingo(corrida.diaDaSemana)) {
+            tarifa += corrida.distancia * 2.9;
           } else {
-            tarifa += segmento.distancia * 2.1;
+            tarifa += corrida.distancia * 2.1;
           }
         }
       } else {
-        // console.log(d);
         return -2;
       }
     } else {
-      // console.log(distancia);
-
       return -1;
     }
   }
