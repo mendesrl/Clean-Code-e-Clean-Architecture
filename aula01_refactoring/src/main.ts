@@ -1,49 +1,54 @@
-
 // @ts-nocheck
-// calculate ride
-export function calc (movArray) {
-	let result = 0;
-	for (const mov of movArray) {
-		if (mov.distancia != null && mov.distancia != undefined && typeof mov.distancia === "number" && mov.distancia > 0) {
-			if (mov.diaDaSemana != null && mov.diaDaSemana != undefined && mov.diaDaSemana instanceof Date && mov.diaDaSemana.toString() !== "Invalid Date") {
+// calcular rotas
+export function calcularRotas(segmentos) {
+  let tarifa = 0;
+  for (const segmento of segmentos) {
+    if (
+      segmento.distancia != null &&
+      segmento.distancia != undefined &&
+      typeof segmento.distancia === "number" &&
+      segmento.distancia > 0
+    ) {
+      if (
+        segmento.diaDaSemana != null &&
+        segmento.diaDaSemana != undefined &&
+        segmento.diaDaSemana instanceof Date &&
+        segmento.diaDaSemana.toString() !== "Invalid Date"
+      ) {
+        // overnight
 
-				// overnight
+        if (
+          segmento.diaDaSemana.getHours() >= 22 ||
+          segmento.diaDaSemana.getHours() <= 6
+        ) {
+          // not sunday
+          if (segmento.diaDaSemana.getDay() !== 0) {
+            tarifa += segmento.distancia * 3.9;
+            // sunday
+          } else {
+            tarifa += segmento.distancia * 5;
+          }
+        } else {
+          // sunday
+          if (segmento.diaDaSemana.getDay() === 0) {
+            tarifa += segmento.distancia * 2.9;
+          } else {
+            tarifa += segmento.distancia * 2.1;
+          }
+        }
+      } else {
+        // console.log(d);
+        return -2;
+      }
+    } else {
+      // console.log(distancia);
 
-				if (mov.diaDaSemana.getHours() >= 22 || mov.diaDaSemana.getHours() <= 6) {
-
-					// not sunday
-					if (mov.diaDaSemana.getDay() !== 0) {
-
-						result += mov.distancia * 3.90;
-					// sunday
-					} else {
-						result += mov.distancia * 5;
-
-					}
-				} else {
-					// sunday
-					if (mov.diaDaSemana.getDay() === 0) {
-
-						result += mov.distancia * 2.9;
-
-					} else {
-						result += mov.distancia * 2.10;
-					}
-				}
-			} else {
-				// console.log(d);
-				return -2;
-			}
-		} else {
-			// console.log(distancia);
-
-			return -1;
-		}
-
-	}
-	if (result < 10) {
-		return 10;
-	} else {
-		return result;
-	}
+      return -1;
+    }
+  }
+  if (tarifa < 10) {
+    return 10;
+  } else {
+    return tarifa;
+  }
 }
