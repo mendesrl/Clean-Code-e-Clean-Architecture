@@ -29,7 +29,7 @@ function dataValida(diaDaSemana: date) {
 export function calcularRotas(corridas) {
   let tarifa = 0;
   for (const corrida of corridas) {
-    if (!corridaValida(corrida.distancia)) return -1;
+    if (!corridaValida(corrida.distancia)) throw new Error('A distancia da corrida é invalida');
     if (!dataValida(corrida.diaDaSemana)) return -2;
     if (periodoNoturno(corrida.diaDaSemana) && !domingo(corrida.diaDaSemana)) {
       tarifa += corrida.distancia * TARIFA_NOTURNA;

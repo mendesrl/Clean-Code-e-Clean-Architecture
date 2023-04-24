@@ -41,8 +41,7 @@ test("Deve retornar -1 se a diistancia for invalida",function(){
         distancia: -10,
         diaDaSemana: new Date('2021-03-07T23:00:00')
     }]
-    const tarifa = calcularRotas(entrada)
-    expect(tarifa).toBe(-1);
+    expect(()=> calcularRotas(entrada)).toThrowError('A distancia da corrida é invalida')
 })
 
 test("Deve retornar -2 se a data for invalida",function(){
