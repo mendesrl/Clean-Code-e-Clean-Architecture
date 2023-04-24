@@ -1,16 +1,14 @@
-// @ts-nocheck
+const TARIFA_MINIMA = 10;
+const TARIFA_NORMAL = 2.1;
+const TARIFA_DOMINGO = 2.9;
+const TARIFA_NOTURNA = 3.9;
+const TARIFA_NOTURNA_DOMINGO = 5;
 
-const TARIFA_MINIMA = 10
-const TARIFA_NORMAL = 2.1
-const TARIFA_DOMINGO = 2.9
-const TARIFA_NOTURNA = 3.9
-const TARIFA_NOTURNA_DOMINGO = 5
-
-function periodoNoturno(diaDaSemana: date) {
+function periodoNoturno(diaDaSemana: Date) {
   return diaDaSemana.getHours() >= 22 || diaDaSemana.getHours() <= 6;
 }
 
-function domingo(diaDaSemana: date) {
+function domingo(diaDaSemana: Date) {
   return diaDaSemana.getDay() === 0;
 }
 
@@ -18,7 +16,7 @@ function corridaValida(distancia: number) {
   return distancia != null && distancia != undefined && distancia > 0;
 }
 
-function dataValida(diaDaSemana: date) {
+function dataValida(diaDaSemana: Date) {
   return (
     diaDaSemana != null &&
     diaDaSemana != undefined &&
@@ -26,11 +24,18 @@ function dataValida(diaDaSemana: date) {
   );
 }
 
-export function calcularRotas(corridas) {
+export function calcularRotas(
+  corridas: {
+    distancia: number,
+    diaDaSemana: Date
+  }[]
+) {
   let tarifa = 0;
   for (const corrida of corridas) {
-    if (!corridaValida(corrida.distancia)) throw new Error('A distancia da corrida é invalida');
-    if (!dataValida(corrida.diaDaSemana)) throw new Error('A data da corrida é invalida');
+    if (!corridaValida(corrida.distancia))
+      throw new Error("A distancia da corrida é invalida");
+    if (!dataValida(corrida.diaDaSemana))
+      throw new Error("A data da corrida é invalida");
     if (periodoNoturno(corrida.diaDaSemana) && !domingo(corrida.diaDaSemana)) {
       tarifa += corrida.distancia * TARIFA_NOTURNA;
     }

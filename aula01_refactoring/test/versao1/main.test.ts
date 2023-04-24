@@ -1,4 +1,4 @@
-import { calcularRotas} from "../src/main"
+import { calcularRotas } from "../../src/versao1/main"
 
 test("Deve calcular a tarifa em um dia normal",function(){
     const entrada = [{
