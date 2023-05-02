@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - ./cccat11.sql:/docker-entrypoint-initdb.d/cccat11.sql
+    environment:
+      POSTGRES_PASSWORD: "Postgres2023!"
+    ports:
+      - "5432:5432"
